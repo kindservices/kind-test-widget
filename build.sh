@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 export TAG=${TAG:-local}
-export IMG=${IMG:-kindservices/kind-test-widget-web:$TAG}
+export IMG=${IMG:-kindservices/kind-test-widget:$TAG}
 export PORT=${PORT:-3000}
 
 
@@ -37,12 +37,12 @@ EOL
 }
 
 installArgo() {
-    APP=${APP:-KindTest}
+    APP=${APP:-kind-test}
     BRANCH=${BRANCH:-`git rev-parse --abbrev-ref HEAD`}
 
     echo "creating $APP"
 
-    kubectl create namespace data-mesh > /dev/null
+    kubectl create namespace data-mesh 2> /dev/null
 
     # beast mode :-)
     argocd app create $APP \

@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: kind-test-widget-web
-        image: kindservices/kind-test-widget-web:latest
+        image: kindservices/kind-test-widget:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 80

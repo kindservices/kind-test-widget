@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kind-test-widget-web-deployment
+  namespace: data-mesh
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kind-test-widget-web
+  template:
+    metadata:
+      labels:
+        app: kind-test-widget-web
+    spec:
+      containers:
+      - name: kind-test-widget-web
+        image: kindservices/kind-test-widget-web:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+        readinessProbe:
+          tcpSocket:
+            port: 80
+          initialDelaySeconds: 3
+          periodSeconds: 3
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+            scheme: HTTP
+          initialDelaySeconds: 3
+          periodSeconds: 3
+        # https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+      - name: kind-test-widget-sidecar
+        image: kindservices/datamesh-service-registry-client:latest
+        imagePullPolicy: Always
+        env:
+          - name: HOSTPORT
+            value: "http://service-registry-service.data-mesh:8080"
+          - name: ID
+            value: kind-test-widget-web
+          - name: FREQUENCY_IN_SECONDS
+            value: "3"
+          - name: BODY
+            value: '{"webComponent":{"jsUrl":"http://kind-test-widget-web.data-mesh/bundle.js","cssUrl":"http://kind-test-widget-web.data-mesh/bundle.css","componentId":"<kind-test-widget param_one=\"some param\"></kind-test-widget>"},"label":"Kind Test","tags":{"props":"param_one"}}'
+        resources:
+          limits:
+            memory: "64Mi"
+            cpu: "100m"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kind-test-widget-web
+  namespace: data-mesh
+spec:
+  type: LoadBalancer
+  sessionAffinity: None
+  selector:
+    app: kind-test-widget-web
+  ports:
+  - name : default
+    port: 80
+    targetPort: 80

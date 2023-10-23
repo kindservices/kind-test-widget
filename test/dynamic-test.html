@@ -1,0 +1,32 @@
+<html>
+<head>
+    <script lang="javascript" >
+        function doLoad() {
+            var script = document.createElement('script');
+            script.src = "http://localhost:3000/bundle.js";
+
+            var css = document.createElement('link');
+            css.rel = "stylesheet";
+            css.href = "http://localhost:3000/bundle.js";
+
+            document.head.appendChild(script);
+            document.head.appendChild(css);
+
+
+            var target = document.getElementById('target');
+
+            target.innerHTML = '<kind-test-widget param_one="value from dynamic-test.html"></kind-test-widget>';
+        }
+    </script>
+</head>
+<body>
+    <!-- see https://stackoverflow.com/questions/14521108/dynamically-load-js-inside-js -->
+    <h1>Here's your Kind Test 'kind-test-widget' component</h1>
+    <p>It uses 'param_one' parameter and exported from ./src/lib/KindTest.svelte:</p>
+    <p>This test html was meant to test the `make run` target, 
+        which builds and runs the widget in a docker container. After running "make run", load this file directly in your browser</p>
+    <input type="button" onclick="doLoad()" value="Load"></input>
+    <div id="target" >This will be replaced</div>
+</body>
+
+</html>

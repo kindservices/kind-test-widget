@@ -6,7 +6,7 @@
 
 <main>
   <div class="card">
-    <KindTest param_one="Kind Test value set in App.svelte" />
+    <KindTest param_one="Kind Test value set in KindTestApp.svelte" />
   </div>
 
 </main>

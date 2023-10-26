@@ -1,7 +1,10 @@
 <svelte:options tag="kind-test-widget" />
 
-<script>
-  import Counter from "./Counter.svelte";
+<script lang="ts">
+  let count: number = 0
+  const increment = () => {
+    count += 1
+  }
 
   // note - we set param_one in our k8s/web.yaml
     export let param_one;
@@ -15,8 +18,11 @@
             <div class="card-title">
               <h2>{param_one}</h2>
             </div>
-          </div>
-          <Counter />
+          </div>           
+          <button on:click={increment}>
+            test clicks: {count}
+          </button>
+
         </div>
       </div>
     </div>

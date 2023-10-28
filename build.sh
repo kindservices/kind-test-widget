@@ -9,18 +9,21 @@ build() {
     docker build --tag $IMG .
     echo "Built $IMG. To run:"
     echo ""
-    echo "docker run --rm -name kind-test-widget -it -p $PORT:80 $IMG"
+    echo "    docker run --rm --name kind-test-widget -d -it -p $PORT:80 $IMG"
     echo ""
     echo "And open http://localhost:$PORT/bundle.js or http://localhost:$PORT/bundle.css"
+    echo ""
+    echo "Once running, to manually test, open ./test/local-test.html or ./test/dynamic-test.html"
+    echo ""
 }
 
 dev() {
-    yarn
-    yarn dev
+    pnpm install
+    pnpm dev
 }
 
 clean() {
-    yarn cache clean
+    pnpm store prune
 }
 
 run() {
